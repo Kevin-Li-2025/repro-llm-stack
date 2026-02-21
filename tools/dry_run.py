@@ -59,9 +59,10 @@ def main() -> int:
     cfg_cpt = root / "configs/train/llamafactory_qwen25_7b_lora_cpt_smoke.yaml"
     recipe_cpt = root / "recipes/cpt_smoke.yaml"
     cfg_tasks = root / "configs/eval/lm_eval_tasks.txt"
+    exp_reg = root / "experiments" / "registry.yaml"
     missing = [
         str(p.relative_to(root))
-        for p in (cfg_sft, cfg_dpo, cfg_cpt, recipe_cpt, cfg_tasks)
+        for p in (cfg_sft, cfg_dpo, cfg_cpt, recipe_cpt, cfg_tasks, exp_reg)
         if not p.is_file()
     ]
     if missing and args.strict:

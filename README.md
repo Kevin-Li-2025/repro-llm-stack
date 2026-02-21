@@ -8,6 +8,20 @@
 
 The training stack is pinned to **[LlamaFactory](https://github.com/hiyouga/LlamaFactory)** so configs, scripts, and docs stay coherent.
 
+## Positioning (read this if you are applying to research programs)
+
+This is **not** a new algorithm repo. The defensible narrative is **experimentation infrastructure + data governance**:
+
+| Lens | What exists here |
+|------|------------------|
+| **Research honesty** | [docs/RESEARCH.md](docs/RESEARCH.md) — how to describe contributions without overselling. |
+| **Preference / data** | [docs/PREFERENCE_AND_DATA.md](docs/PREFERENCE_AND_DATA.md) — exact DPO construction + limitations + synthetic controls. |
+| **Data quality metrics** | `tools/data_quality_report.py` → dup proxies, length tails, DPO pair diagnostics (`make quality`). |
+| **Ablations** | [experiments/registry.yaml](experiments/registry.yaml) → [docs/ABLATION_REGISTRY.md](docs/ABLATION_REGISTRY.md) (`make experiments-render`). |
+| **Eval regression** | CI runs an **`lm-eval` smoke job on `gpt2`** (harness health), *not* a 7B claim — [docs/CI_AND_HARNESS.md](docs/CI_AND_HARNESS.md). |
+
+**You still must produce 7B (or your target) numbers locally** and commit/publish `docs/BENCHMARK_TABLE.md` — see [docs/RESULTS.md](docs/RESULTS.md).
+
 ## Default base model
 
 - **`Qwen/Qwen2.5-7B`** — For another base (e.g. `mistralai/Mistral-7B-v0.3`), edit `model_name_or_path` and the chat **template** in `configs/train/`.
@@ -64,7 +78,8 @@ pip install -e ".[eval]"
 
 ```bash
 make dry-run
-make prepare
+make prepare && make quality
+make experiments-render
 make sft && make dpo
 make eval
 make prepare-cpt-smoke && make cpt   # optional CPT smoke
@@ -75,6 +90,7 @@ make check
 
 - `repro-prepare-data` / `repro-prepare-cpt-smoke`
 - `repro-dry-run` / `repro-summarize-eval` / `repro-compare-eval`
+- `repro-data-quality` / `repro-experiments-render` / `repro-synth-prefs-demo`
 
 ### 1) Post-training data + manifest
 
@@ -110,7 +126,13 @@ MODEL_PATH=Qwen/Qwen2.5-7B ./scripts/eval/benchmarks.sh
 | `recipes/default.yaml` | SFT/DPO HF sources + filters |
 | `recipes/cpt_smoke.yaml` | CPT smoke corpus recipe (WikiText) |
 | `docs/CPT_AND_PRETRAIN.md` | CPT / pretrain scope + production checklist |
+| `docs/RESEARCH.md` | Honest “what is novel” framing for interviews |
+| `docs/PREFERENCE_AND_DATA.md` | Preference construction + synthetic controls |
+| `docs/ABLATION_REGISTRY.md` | Rendered experiment grid |
+| `docs/CI_AND_HARNESS.md` | What CI proves / does not prove |
 | `docs/RESULTS.md` | How to record baseline vs SFT vs DPO numbers |
+| `tools/data_quality_report.py` | Quantitative data QA |
+| `experiments/registry.yaml` | Source of truth for ablations |
 | `tools/compare_eval_runs.py` | Build comparison tables from `lm_eval` JSON |
 | `results/eval_runs/README.md` | Where to park JSON outputs for comparisons |
 

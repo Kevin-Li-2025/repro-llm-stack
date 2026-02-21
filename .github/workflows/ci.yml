@@ -7,9 +7,9 @@ on:
     branches: [main]
 
 jobs:
-  lint-and-smoke-data:
+  lint-data-quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -31,3 +31,40 @@ jobs:
 
       - name: Prepare data (capped)
         run: python tools/prepare_data.py --root . --max-sft 32 --max-dpo 32
+
+      - name: Data quality report
+        run: python tools/data_quality_report.py --root .
+
+  eval-harness-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install eval extras (pulls torch + lm-eval)
+        run: |
+          python -m pip install -U pip
+          pip install -e ".[eval]"
+
+      - name: lm-eval smoke (gpt2, tiny sample)
+        run: |
+          mkdir -p results/ci
+          lm_eval --model hf \
+            --model_args pretrained=gpt2,dtype=float32 \
+            --tasks arc_easy \
+            --limit 40 \
+            --batch_size 4 \
+            --output_path results/ci/lm_eval_gpt2.json
+
+      - name: Summarize smoke eval
+        run: python tools/summarize_lm_eval.py results/ci/lm_eval_gpt2.json --out results/ci/SUMMARY.md
+
+      - name: Upload eval artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lm-eval-smoke
+          path: results/ci/*

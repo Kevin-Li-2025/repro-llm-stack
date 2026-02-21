@@ -2,6 +2,12 @@
 
 Interviewers and reviewers expect **numbers**, not only scripts. This page explains **exactly** how to produce a defensible before/after table for *this* repository’s fixed `lm-eval` task list.
 
+## Before you claim “better data” or “better alignment”
+
+1. **Quantify the data** — after every `prepare`, run `python tools/data_quality_report.py --root .` and archive `artifacts/data_quality_report.json` next to the manifest. This is your **data ablation paper trail**.
+2. **Pre-register comparisons** — edit `experiments/registry.yaml`, run `python tools/experiments_render.py`, and execute a subset of rows (β sweeps, data caps, CPT-then-SFT). See `docs/ABLATION_REGISTRY.md`.
+3. **Know what CI does *not* prove** — GitHub Actions runs a **`gpt2` lm-eval smoke test** to keep the harness honest; it is **not** evidence about Qwen2.5-7B quality. Read `docs/CI_AND_HARNESS.md`.
+
 ## What you should claim
 
 - **Honest positioning** — default artifacts target **post-training** on public instruction/preference data. Gains (or regressions) depend on data volume, hyperparameters, and whether you merge adapters into a full checkpoint before evaluation.
@@ -49,6 +55,17 @@ python tools/compare_eval_runs.py \
 ```
 
 Commit `docs/BENCHMARK_TABLE.md` (or paste the table into your résumé / application packet). The delta column defaults to **last minus first** run; reorder `--run` if you want a different reference.
+
+## Ablation grid (hyperparameters & data)
+
+Use the IDs in `docs/ABLATION_REGISTRY.md` as row labels in your lab notebook. For each ID:
+
+1. Train once (or repeat with **seeds {0,1,2}** if you want error bars).
+2. Run the **same** `benchmarks.sh` command.
+3. Save JSON as `results/eval_runs/<id>_seed<s>.json`.
+4. Feed the files to `tools/compare_eval_runs.py`.
+
+Minimum credible story for applications: **baseline vs default SFT vs default DPO** *plus* **one** extra axis (e.g. DPO β low vs high, or 50% data vs 100% data).
 
 ## External reference scores (different harness — use as context only)
 

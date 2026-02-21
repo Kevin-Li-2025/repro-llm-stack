@@ -1,0 +1,43 @@
+# Pre-registered style ablation grid — not executed automatically.
+# Use `python tools/experiments_render.py` to emit docs/ABLATION_REGISTRY.md
+schema_version: 1
+project: repro-llm-stack
+primary_metrics:
+  - lm_eval_tasks_file: configs/eval/lm_eval_tasks.txt
+  - compare_tool: tools/compare_eval_runs.py
+
+experiments:
+  - id: E0-baseline
+    description: Base checkpoint before any adapters (merged full weights if comparing to LoRA runs).
+    train_stage: none
+    notes: "MODEL_PATH=Qwen/Qwen2.5-7B ./scripts/eval/benchmarks.sh"
+
+  - id: E1-sft-default
+    description: Default LoRA SFT recipe (configs/train/llamafactory_qwen25_7b_lora_sft.yaml).
+    train_stage: sft
+    toggles:
+      learning_rate: 1.0e-4
+      num_train_epochs: 1.0
+
+  - id: E2-dpo-beta-0.05
+    description: DPO with smaller beta (sharper preference signal).
+    train_stage: dpo
+    toggles:
+      pref_beta: 0.05
+
+  - id: E3-dpo-beta-0.2
+    description: DPO with larger beta (softer KL to reference).
+    train_stage: dpo
+    toggles:
+      pref_beta: 0.2
+
+  - id: E4-data-cap-50pct
+    description: Train on a random 50% subset of exported JSONL to test data scaling (implement via LlamaFactory max_samples or external shuffle).
+    train_stage: sft+dpo
+    toggles:
+      data_fraction: 0.5
+
+  - id: E5-cpt-smoke-then-sft
+    description: Optional CPT smoke (WikiText slice) before SFT — expect small or mixed moves on knowledge-heavy tasks.
+    train_stage: cpt+sft
+    notes: "./scripts/data/prepare_cpt_smoke.sh && ./scripts/train/cpt.sh then standard SFT"
