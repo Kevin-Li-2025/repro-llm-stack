@@ -186,6 +186,8 @@ python3 tools/dry_run.py --recipe recipes/default.yaml --strict
 
 ## Troubleshooting
 
+- **`lm-eval` / `torch` install fails on Python 3.13+** — use **Python 3.10–3.12** (e.g. `brew install python@3.11`), then `python3.11 -m venv .venv && source .venv/bin/activate && pip install -e ".[eval]"`.
+- **`No module named transformers` when running `lm_eval`** — install eval extras (`pip install -e ".[eval]"`), which include `transformers` and `torch` for the Hugging Face backend.
 - **`prepare_data` exit code 2** — empty export; relax filters or use `--allow-empty` for debugging only.
 - **`trust_remote_code` from `datasets`** — set `load_dataset_kwargs` in the recipe.
 - **Template mismatch** — align LlamaFactory `template` with the model family.
