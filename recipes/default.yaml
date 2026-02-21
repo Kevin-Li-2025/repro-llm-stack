@@ -1,0 +1,26 @@
+schema_version: 1
+recipe_id: default-v0
+filter_policy_version: v1
+
+# Pin revisions once you freeze a release (HF dataset commit SHA or git tag).
+sources:
+  sft:
+    hf_path: tatsu-lab/alpaca
+    split: train
+    revision: null
+  dpo:
+    hf_path: HuggingFaceH4/ultrafeedback_binarized
+    split: train_prefs
+    revision: null
+
+filters:
+  min_chars: 50
+  max_chars: 32768
+
+# Set caps while iterating locally; set to null for full exports.
+limits:
+  max_sft_rows: null
+  max_dpo_rows: null
+
+tokenizer:
+  pretrained: Qwen/Qwen2.5-7B

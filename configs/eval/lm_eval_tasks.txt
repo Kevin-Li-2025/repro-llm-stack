@@ -1,0 +1,9 @@
+# Fixed task subset for reproducible regression (lm-evaluation-harness).
+# One task per line; blank lines and # comments are ignored.
+arc_easy
+arc_challenge
+hellaswag
+winogrande
+piqa
+boolq
+copa
