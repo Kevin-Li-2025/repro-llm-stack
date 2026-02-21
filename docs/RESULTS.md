@@ -1,6 +1,6 @@
 # Results, baselines, and reporting SFT / DPO gains
 
-Interviewers and reviewers expect **numbers**, not only scripts. This page explains **exactly** how to produce a defensible before/after table for *this* repository’s fixed `lm-eval` task list.
+**Empirical claims require numbers**, not only scripts. This page explains **exactly** how to produce a defensible before/after table for *this* repository’s fixed `lm-eval` task list.
 
 ## Before you claim “better data” or “better alignment”
 
@@ -54,7 +54,7 @@ python tools/compare_eval_runs.py \
   --out docs/BENCHMARK_TABLE.md
 ```
 
-Commit `docs/BENCHMARK_TABLE.md` (or paste the table into your résumé / application packet). The delta column defaults to **last minus first** run; reorder `--run` if you want a different reference.
+Commit `docs/BENCHMARK_TABLE.md`. You can also copy the table into separate documentation or reports. The delta column defaults to **last minus first** run; reorder `--run` if you want a different reference.
 
 ## Ablation grid (hyperparameters & data)
 
@@ -65,7 +65,7 @@ Use the IDs in `docs/ABLATION_REGISTRY.md` as row labels in your lab notebook. F
 3. Save JSON as `results/eval_runs/<id>_seed<s>.json`.
 4. Feed the files to `tools/compare_eval_runs.py`.
 
-Minimum credible story for applications: **baseline vs default SFT vs default DPO** *plus* **one** extra axis (e.g. DPO β low vs high, or 50% data vs 100% data).
+A minimal credible comparison set: **baseline vs default SFT vs default DPO** *plus* **one** extra axis (e.g. DPO β low vs high, or 50% data vs 100% data).
 
 ## External reference scores (different harness — use as context only)
 
@@ -88,4 +88,4 @@ Replace metric names with the ones `compare_eval_runs.py` selects (it prints the
 
 ## CPT smoke results
 
-If you run `./scripts/data/prepare_cpt_smoke.sh` then `./scripts/train/cpt.sh`, repeat the same evaluation protocol and add another column or row — but **label it clearly** as “CPT smoke (WikiText slice)” so reviewers do not confuse it with large-scale CPT.
+If you run `./scripts/data/prepare_cpt_smoke.sh` then `./scripts/train/cpt.sh`, repeat the same evaluation protocol and add another column or row — but **label it clearly** as “CPT smoke (WikiText slice)” so others do not confuse it with large-scale CPT.
