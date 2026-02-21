@@ -24,3 +24,8 @@ limits:
 
 tokenizer:
   pretrained: Qwen/Qwen2.5-7B
+
+# Optional: forwarded to Hugging Face `load_dataset(...)` for both sources.
+# Example for datasets that require loading code:
+# load_dataset_kwargs:
+#   trust_remote_code: true

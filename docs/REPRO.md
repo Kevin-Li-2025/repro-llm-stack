@@ -21,7 +21,7 @@ For each published result, record:
 
 Each run should emit under `artifacts/`:
 
-- `data_manifest.json` — dataset revisions, row counts, checksums
+- `data_manifest.json` — dataset revisions, row counts, checksums, optional `environment` (Python / package versions, git commit)
 - `train_config.yaml` — resolved config (Hydra-style dump if you use Hydra)
 - `eval/` — raw lm-eval outputs + a small `SUMMARY.md` you paste into releases
 

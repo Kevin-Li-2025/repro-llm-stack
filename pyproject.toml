@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "repro-llm-stack"
-version = "0.1.0"
+version = "0.1.1"
 description = "Reproducible ~7B LM stack: data, train, eval, serve"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,6 +13,11 @@ authors = [{ name = "You" }]
 dependencies = [
   "pyyaml>=6.0.1",
 ]
+
+[project.scripts]
+repro-prepare-data = "tools.prepare_data:cli"
+repro-dry-run = "tools.dry_run:cli"
+repro-summarize-eval = "tools.summarize_lm_eval:cli"
 
 [project.optional-dependencies]
 dev = [

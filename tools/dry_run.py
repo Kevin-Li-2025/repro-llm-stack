@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import yaml
@@ -12,22 +13,62 @@ import yaml
 
 def load_recipe(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        data = yaml.safe_load(f)
+    if not isinstance(data, dict):
+        raise ValueError("Recipe must be a YAML mapping")
+    return data
 
 
-def main() -> None:
-    p = argparse.ArgumentParser()
+def main() -> int:
+    p = argparse.ArgumentParser(description="Print pipeline plan JSON for a recipe")
     p.add_argument("--recipe", type=Path, default=Path("recipes/default.yaml"))
+    p.add_argument(
+        "--root",
+        type=Path,
+        default=None,
+        help="Repository root for existence checks (default: parent of tools/)",
+    )
+    p.add_argument(
+        "--strict",
+        action="store_true",
+        help="Exit non-zero if expected config files are missing",
+    )
     args = p.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = args.root or Path(__file__).resolve().parents[1]
     recipe_path = args.recipe if args.recipe.is_absolute() else root / args.recipe
-    recipe = load_recipe(recipe_path)
+    if not recipe_path.is_file():
+        print(f"Recipe not found: {recipe_path}", file=sys.stderr)
+        return 1
 
-    plan = {
+    try:
+        recipe = load_recipe(recipe_path)
+    except ValueError as e:
+        print(str(e), file=sys.stderr)
+        return 1
+
+    if recipe.get("schema_version") != 1:
+        print("Unsupported schema_version (expected 1).", file=sys.stderr)
+        return 1
+    if not recipe.get("recipe_id"):
+        print("Missing recipe_id.", file=sys.stderr)
+        return 1
+
+    cfg_sft = root / "configs/train/llamafactory_qwen25_7b_lora_sft.yaml"
+    cfg_dpo = root / "configs/train/llamafactory_qwen25_7b_lora_dpo.yaml"
+    cfg_tasks = root / "configs/eval/lm_eval_tasks.txt"
+    missing = [str(p.relative_to(root)) for p in (cfg_sft, cfg_dpo, cfg_tasks) if not p.is_file()]
+    if missing and args.strict:
+        print(f"Missing expected files: {', '.join(missing)}", file=sys.stderr)
+        return 2
+
+    plan: dict = {
         "stack": "LlamaFactory (SFT + DPO) + lm-evaluation-harness + vLLM",
         "base_model_default": "Qwen/Qwen2.5-7B",
         "recipe_id": recipe.get("recipe_id"),
+        "checks": {
+            "missing_files": missing,
+        },
         "steps": [
             {
                 "name": "prepare_data",
@@ -58,7 +99,12 @@ def main() -> None:
         ],
     }
     print(json.dumps(plan, indent=2, ensure_ascii=False))
+    return 0
+
+
+def cli() -> None:
+    raise SystemExit(main())
 
 
 if __name__ == "__main__":
-    main()
+    cli()
