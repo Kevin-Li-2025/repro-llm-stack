@@ -56,8 +56,14 @@ def main() -> int:
 
     cfg_sft = root / "configs/train/llamafactory_qwen25_7b_lora_sft.yaml"
     cfg_dpo = root / "configs/train/llamafactory_qwen25_7b_lora_dpo.yaml"
+    cfg_cpt = root / "configs/train/llamafactory_qwen25_7b_lora_cpt_smoke.yaml"
+    recipe_cpt = root / "recipes/cpt_smoke.yaml"
     cfg_tasks = root / "configs/eval/lm_eval_tasks.txt"
-    missing = [str(p.relative_to(root)) for p in (cfg_sft, cfg_dpo, cfg_tasks) if not p.is_file()]
+    missing = [
+        str(p.relative_to(root))
+        for p in (cfg_sft, cfg_dpo, cfg_cpt, recipe_cpt, cfg_tasks)
+        if not p.is_file()
+    ]
     if missing and args.strict:
         print(f"Missing expected files: {', '.join(missing)}", file=sys.stderr)
         return 2
@@ -96,6 +102,21 @@ def main() -> int:
                 "tasks": "configs/eval/lm_eval_tasks.txt",
             },
             {"name": "serve", "script": "scripts/serve/vllm.sh"},
+            {
+                "name": "cpt_smoke_prepare",
+                "script": "scripts/data/prepare_cpt_smoke.sh",
+                "docs": "docs/CPT_AND_PRETRAIN.md",
+                "outputs": [
+                    "artifacts/cpt_data/cpt_smoke.jsonl",
+                    "artifacts/cpt_data/dataset_info.json",
+                    "artifacts/cpt_data_manifest.json",
+                ],
+            },
+            {
+                "name": "cpt_smoke_train",
+                "script": "scripts/train/cpt.sh",
+                "config": "configs/train/llamafactory_qwen25_7b_lora_cpt_smoke.yaml",
+            },
         ],
     }
     print(json.dumps(plan, indent=2, ensure_ascii=False))
