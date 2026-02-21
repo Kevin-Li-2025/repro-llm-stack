@@ -2,6 +2,34 @@
 
 [![CI](https://github.com/Kevin-Li-2025/repro-llm-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/Kevin-Li-2025/repro-llm-stack/actions/workflows/ci.yml)
 
+## Why this matters
+
+Post-training effects are often **small, noisy, and data-dependent**. If you cannot **freeze what data was used**, **quantify basic pathology** (duplicates, length skew, degenerate pairs), and **diff evaluations under identical harness settings**, you cannot say what you learned from a run. This project makes those steps **obligatory and scripted**, so “what changed?” is answerable.
+
+## What we measured (data plane — in this repo today)
+
+The default export (`recipes/default.yaml`) has been **materialized and scored** on a **2000-row prefix** of each stream (first passing examples in dataset order — see caveats in the doc):
+
+| Signal | SFT (Alpaca export) | DPO (Ultrafeedback → flat pairs) |
+|--------|---------------------|-----------------------------------|
+| Mean output / response chars | **255** (p50 **155**, p95 **735**) | chosen **1280** vs rejected **1132** |
+| Approx. duplicate rate (normalized hash) | **0** | **0** |
+| DPO length prior | — | **55.6%** of pairs have chosen longer than rejected; **0.75%** share a full common prefix up to the shorter length |
+
+Full tables, methodology, and interpretation: **[docs/MEASURED_FINDINGS.md](docs/MEASURED_FINDINGS.md)**.
+
+![Mean character lengths for exported SFT outputs and DPO responses](docs/figures/data_qa_overview.svg)
+
+Regenerate after changing recipes or caps:
+
+`make prepare && make quality && make findings`
+
+## What still belongs on the model plane (your GPUs)
+
+**Downstream benchmark deltas** (base vs merged SFT vs merged DPO on `configs/eval/lm_eval_tasks.txt`) are not substituted by the table above. Produce and commit **`docs/BENCHMARK_TABLE.md`** via [docs/RESULTS.md](docs/RESULTS.md) once checkpoints exist.
+
+---
+
 **Primary scope:** a reproducible **post-training** pipeline for a **~7B** causal LM — **data manifest → SFT → DPO → fixed `lm-eval` regression tasks → optional `vLLM`**.
 
 **Extensions:** optional **continued pretraining (CPT) smoke** wiring (`stage: pt` in LlamaFactory) plus documentation for **large-scale CPT / pretrain** (separate compute path). This is **not** a “train 7B from scratch in one click” repository; see [docs/CPT_AND_PRETRAIN.md](docs/CPT_AND_PRETRAIN.md).
@@ -83,6 +111,7 @@ make experiments-render
 make sft && make dpo
 make eval
 make prepare-cpt-smoke && make cpt   # optional CPT smoke
+make findings                        # MEASURED_FINDINGS.md + SVG (after prepare + quality)
 make check
 ```
 
@@ -91,6 +120,7 @@ make check
 - `repro-prepare-data` / `repro-prepare-cpt-smoke`
 - `repro-dry-run` / `repro-summarize-eval` / `repro-compare-eval`
 - `repro-data-quality` / `repro-experiments-render` / `repro-synth-prefs-demo`
+- `repro-render-findings` / `repro-plot-qa-figure`
 
 ### 1) Post-training data + manifest
 
@@ -129,6 +159,8 @@ MODEL_PATH=Qwen/Qwen2.5-7B ./scripts/eval/benchmarks.sh
 | `docs/RESEARCH.md` | Honest scope and novelty framing |
 | `docs/PREFERENCE_AND_DATA.md` | Preference construction + synthetic controls |
 | `docs/ABLATION_REGISTRY.md` | Rendered experiment grid |
+| `docs/MEASURED_FINDINGS.md` | Committed data-plane measurements + interpretation |
+| `docs/figures/data_qa_overview.svg` | Figure for mean lengths / DPO prior (regenerate with `make findings`) |
 | `docs/CI_AND_HARNESS.md` | What CI proves / does not prove |
 | `docs/RESULTS.md` | How to record baseline vs SFT vs DPO numbers |
 | `tools/data_quality_report.py` | Quantitative data QA |

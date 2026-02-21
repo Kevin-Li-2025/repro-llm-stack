@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" viewBox="0 0 640 300">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <text x="72" y="28" font-size="15" font-weight="600" font-family="system-ui,sans-serif">Exported data — mean character lengths</text>
+  <text x="72" y="46" font-size="11" fill="#444" font-family="system-ui,sans-serif">Source: artifacts/data_quality_report.json</text>
+  <rect x="82.0" y="209.1" width="161.3" height="34.9" fill="#2563eb" rx="4"/><text x="162.7" y="201.1" text-anchor="middle" font-size="11" font-family="system-ui,sans-serif">255</text><text x="162.7" y="262" text-anchor="middle" font-size="10" font-family="system-ui,sans-serif">SFT output μ</text><rect x="263.3" y="69.0" width="161.3" height="175.0" fill="#2563eb" rx="4"/><text x="344.0" y="61.0" text-anchor="middle" font-size="11" font-family="system-ui,sans-serif">1280</text><text x="344.0" y="262" text-anchor="middle" font-size="10" font-family="system-ui,sans-serif">DPO chosen μ</text><rect x="444.7" y="89.2" width="161.3" height="154.8" fill="#2563eb" rx="4"/><text x="525.3" y="81.2" text-anchor="middle" font-size="11" font-family="system-ui,sans-serif">1132</text><text x="525.3" y="262" text-anchor="middle" font-size="10" font-family="system-ui,sans-serif">DPO rejected μ</text>
+  <text x="72" y="292" font-size="11" font-family="system-ui,sans-serif">DPO: P(chosen longer than rejected) = 55.6%</text>
+</svg>

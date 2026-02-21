@@ -1,6 +1,6 @@
 # Results, baselines, and reporting SFT / DPO gains
 
-**Empirical claims require numbers**, not only scripts. This page explains **exactly** how to produce a defensible before/after table for *this* repository’s fixed `lm-eval` task list.
+**Empirical claims require numbers**, not only scripts. **Data-plane measurements** already live in [MEASURED_FINDINGS.md](MEASURED_FINDINGS.md) (lengths, duplicates, DPO pair priors). This page covers the **model plane**: how to produce a defensible before/after table for *this* repository’s fixed `lm-eval` task list.
 
 ## Before you claim “better data” or “better alignment”
 

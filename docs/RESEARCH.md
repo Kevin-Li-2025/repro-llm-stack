@@ -14,7 +14,7 @@ Claiming otherwise without evidence will undermine credibility.
 Think in terms of **systems for scientific iteration**:
 
 1. **Manifest-first data pipeline** — every export is tied to HF revisions, byte hashes, filter versions, and environment metadata (`artifacts/data_manifest.json`). That is a **reproducibility instrument**, not a bash one-liner.
-2. **Quantitative data QA** — `tools/data_quality_report.py` turns “we filtered stuff” into **dup rates, length tails, cheap repetition proxies, DPO pair diagnostics** (`artifacts/data_quality_report.json`).
+2. **Quantitative data QA** — `tools/data_quality_report.py` turns “we filtered stuff” into **dup rates, length tails, cheap repetition proxies, DPO pair diagnostics** (`artifacts/data_quality_report.json`), summarized in [MEASURED_FINDINGS.md](MEASURED_FINDINGS.md).
 3. **Documented preference construction** — `docs/PREFERENCE_AND_DATA.md` states exactly how multi-turn prefs collapse into DPO rows and what information is discarded.
 4. **Pre-registered ablation grid** — `experiments/registry.yaml` + rendered `docs/ABLATION_REGISTRY.md` gives you a **hypothesis checklist** (β, data caps, CPT-then-SFT) instead of ad-hoc sweeps.
 5. **Comparative evaluation harness** — `tools/compare_eval_runs.py` standardizes **before/after tables** from `lm-eval` JSON so gains are **auditable**, not screenshot-deep.

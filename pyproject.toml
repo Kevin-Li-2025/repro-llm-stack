@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "repro-llm-stack"
-version = "0.2.0"
+version = "0.2.1"
 description = "Reproducible ~7B LM stack: data, train, eval, serve"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -23,6 +23,8 @@ repro-compare-eval = "tools.compare_eval_runs:cli"
 repro-data-quality = "tools.data_quality_report:cli"
 repro-experiments-render = "tools.experiments_render:cli"
 repro-synth-prefs-demo = "tools.synth_preference_demo:cli"
+repro-render-findings = "tools.render_measured_findings:cli"
+repro-plot-qa-figure = "tools.plot_qa_figure:cli"
 
 [project.optional-dependencies]
 dev = [
