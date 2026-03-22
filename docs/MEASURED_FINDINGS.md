@@ -35,7 +35,7 @@ Makefile: `make prepare && make quality && make findings`
 - Statistics describe **exported JSONL**, not complete Hugging Face dataset tables.
 - With row caps, examples are the **first** passing rows in dataset order (not an i.i.d. subsample unless you change export logic).
 - **recipe_id:** `default-v0`
-- **git_commit** (recorded in manifest at export): `d160bee672e5ff4cd4cd8d1ff209e39d3b3cc8b9`
+- **git_commit** (recorded in manifest at export): `47f2c2608ba78eff869141c850a87363521bbf4a`
 
 ## SFT export (`repro_sft`)
 
@@ -66,5 +66,5 @@ Makefile: `make prepare && make quality && make findings`
 
 ## Provenance
 
-- **`data_quality_report.created_at`:** `2026-03-22T15:13:20.824831+00:00`
+- **`data_quality_report.created_at`:** `2026-03-22T15:14:40.454243+00:00`
 - **Snapshot written to:** `docs/metrics/data_plane_snapshot.json`

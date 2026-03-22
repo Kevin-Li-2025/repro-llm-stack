@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "description": "Aggregated data-plane metrics only (no raw examples). Committed alongside MEASURED_FINDINGS.md.",
-  "created_at": "2026-03-22T15:13:20.824831+00:00",
+  "created_at": "2026-03-22T15:14:40.454243+00:00",
   "export": {
     "recipe_id": "default-v0",
-    "git_commit_at_export": "d160bee672e5ff4cd4cd8d1ff209e39d3b3cc8b9",
+    "git_commit_at_export": "47f2c2608ba78eff869141c850a87363521bbf4a",
     "sft_jsonl": "artifacts/data/sft.jsonl",
     "dpo_jsonl": "artifacts/data/dpo.jsonl",
     "sft_rows": 2000,
