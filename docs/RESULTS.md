@@ -2,6 +2,8 @@
 
 **Empirical claims require numbers**, not only scripts. **Data-plane measurements** already live in [MEASURED_FINDINGS.md](MEASURED_FINDINGS.md) (lengths, duplicates, DPO pair priors). This page covers the **model plane**: how to produce a defensible before/after table for *this* repository’s fixed `lm-eval` task list.
 
+After you have JSON outputs, use [MODEL_OUTCOMES.md](MODEL_OUTCOMES.md) as a **writing template** for connecting those scores to data-pathology observations — without treating placeholder text as results.
+
 ## Before you claim “better data” or “better alignment”
 
 1. **Quantify the data** — after every `prepare`, run `python tools/data_quality_report.py --root .` and archive `artifacts/data_quality_report.json` next to the manifest. This is your **data ablation paper trail**.

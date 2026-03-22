@@ -26,7 +26,7 @@ Think in terms of **systems for scientific iteration**:
 
 ## What you still must do externally
 
-- **Actually run** the ablations and commit `docs/BENCHMARK_TABLE.md` (see `docs/RESULTS.md`).
+- **Actually run** the ablations and commit `docs/BENCHMARK_TABLE.md` (see `docs/RESULTS.md`). When writing up outcomes, use [MODEL_OUTCOMES.md](MODEL_OUTCOMES.md) so data-plane findings and benchmark deltas are tied together **without** overstating what the table shows.
 - Ideally attach **one figure**: e.g. bar chart of task averages vs baseline, with error bars if you repeat seeds.
 - For a deeper follow-on project, pick **one axis** to deepen next (e.g. *data-centric* study on filtering / synthetic mix rates, or *alignment* study on off-policy DPO assumptions) and cite this repo as **infrastructure**.
 

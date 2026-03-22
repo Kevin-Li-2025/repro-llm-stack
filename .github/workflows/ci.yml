@@ -61,7 +61,15 @@ jobs:
             --output_path results/ci/lm_eval_gpt2.json
 
       - name: Summarize smoke eval
-        run: python tools/summarize_lm_eval.py results/ci/lm_eval_gpt2.json --out results/ci/SUMMARY.md
+        run: |
+          # lm-eval appends an ISO timestamp to .json output paths (see evaluation_tracker.save_results_aggregated).
+          JSON=$(ls -t results/ci/lm_eval_gpt2_*.json 2>/dev/null | head -1)
+          if [ -z "$JSON" ] || [ ! -f "$JSON" ]; then
+            echo "Expected results/ci/lm_eval_gpt2_<timestamp>.json; got:" >&2
+            ls -la results/ci >&2 || true
+            exit 1
+          fi
+          python tools/summarize_lm_eval.py "$JSON" --out results/ci/SUMMARY.md
 
       - name: Upload eval artifacts
         uses: actions/upload-artifact@v4

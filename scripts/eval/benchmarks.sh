@@ -49,5 +49,13 @@ lm_eval \
   --output_path "${OUT_JSON}" \
   "$@"
 
-python3 tools/summarize_lm_eval.py "${OUT_JSON}" --out "${OUT_DIR}/SUMMARY.md"
-echo "[eval] wrote ${OUT_DIR}/SUMMARY.md"
+# lm-eval writes ${stem}_${ISO_timestamp}.json, not the literal --output_path when it ends in .json.
+STEM="$(basename "${OUT_JSON}" .json)"
+ACTUAL_JSON="$(ls -t "${OUT_DIR}/${STEM}"_*.json 2>/dev/null | head -1)"
+if [[ -z "${ACTUAL_JSON}" || ! -f "${ACTUAL_JSON}" ]]; then
+  echo "[eval] could not find lm_eval output matching ${OUT_DIR}/${STEM}_*.json" >&2
+  ls -la "${OUT_DIR}" >&2 || true
+  exit 1
+fi
+python3 tools/summarize_lm_eval.py "${ACTUAL_JSON}" --out "${OUT_DIR}/SUMMARY.md"
+echo "[eval] wrote ${OUT_DIR}/SUMMARY.md (${ACTUAL_JSON})"
