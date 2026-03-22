@@ -57,7 +57,7 @@ def main() -> int:
     svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">
   <rect width="100%" height="100%" fill="#fafafa"/>
   <text x="{margin_l}" y="28" font-size="15" font-weight="600" font-family="system-ui,sans-serif">Exported data — mean character lengths</text>
-  <text x="{margin_l}" y="46" font-size="11" fill="#444" font-family="system-ui,sans-serif">Source: artifacts/data_quality_report.json</text>
+  <text x="{margin_l}" y="46" font-size="11" fill="#444" font-family="system-ui,sans-serif">Committed metrics: docs/metrics/data_plane_snapshot.json</text>
   {"".join(bars)}
   <text x="{margin_l}" y="{h - 8}" font-size="11" font-family="system-ui,sans-serif">DPO: P(chosen longer than rejected) = {frac * 100:.1f}%</text>
 </svg>

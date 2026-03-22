@@ -5,7 +5,7 @@ help:
 	@echo "  make dry-run             — print pipeline plan (JSON)"
 	@echo "  make prepare             — SFT/DPO JSONL + manifest"
 	@echo "  make quality             — data QA report (needs prepare first)"
-	@echo "  make findings            — MEASURED_FINDINGS.md + docs/figures/data_qa_overview.svg"
+	@echo "  make findings            — MEASURED_FINDINGS.md + metrics snapshot + docs/figures/data_qa_overview.svg"
 	@echo "  make synth-demo          — synthetic DPO JSONL for controlled tests"
 	@echo "  make experiments-render  — regenerate docs/ABLATION_REGISTRY.md"
 	@echo "  make prepare-cpt-smoke   — tiny CPT corpus"

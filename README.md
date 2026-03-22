@@ -16,7 +16,7 @@ The default export (`recipes/default.yaml`) has been **materialized and scored**
 | Approx. duplicate rate (normalized hash) | **0** | **0** |
 | DPO length prior | — | **55.6%** of pairs have chosen longer than rejected; **0.75%** share a full common prefix up to the shorter length |
 
-Full tables, methodology, and interpretation: **[docs/MEASURED_FINDINGS.md](docs/MEASURED_FINDINGS.md)**.
+Full tables, methodology, and interpretation: **[docs/MEASURED_FINDINGS.md](docs/MEASURED_FINDINGS.md)**. Machine-readable copy: **[docs/metrics/data_plane_snapshot.json](docs/metrics/data_plane_snapshot.json)**.
 
 ![Mean character lengths for exported SFT outputs and DPO responses](docs/figures/data_qa_overview.svg)
 
@@ -161,6 +161,7 @@ MODEL_PATH=Qwen/Qwen2.5-7B ./scripts/eval/benchmarks.sh
 | `docs/PREFERENCE_AND_DATA.md` | Preference construction + synthetic controls |
 | `docs/ABLATION_REGISTRY.md` | Rendered experiment grid |
 | `docs/MEASURED_FINDINGS.md` | Committed data-plane measurements + interpretation |
+| `docs/metrics/data_plane_snapshot.json` | Same metrics in JSON (for tables, scripts, or supplements) |
 | `docs/figures/data_qa_overview.svg` | Figure for mean lengths / DPO prior (regenerate with `make findings`) |
 | `docs/CI_AND_HARNESS.md` | What CI proves / does not prove |
 | `docs/RESULTS.md` | How to record baseline vs SFT vs DPO numbers |
