@@ -1,4 +1,4 @@
-.PHONY: help dry-run prepare quality findings synth-demo experiments-render prepare-cpt-smoke sft dpo cpt eval lint check
+.PHONY: help dry-run prepare quality findings synth-demo experiments-render prepare-cpt-smoke sft dpo cpt eval retrieval-benchmark lint check
 
 help:
 	@echo "repro-llm-stack — common targets"
@@ -11,6 +11,7 @@ help:
 	@echo "  make prepare-cpt-smoke   — tiny CPT corpus"
 	@echo "  make sft / dpo / cpt     — LlamaFactory train wrappers"
 	@echo "  make eval                — lm_eval + SUMMARY.md"
+	@echo "  make retrieval-benchmark — BEIR dense vs +CE rerank (needs .[retrieval])"
 	@echo "  make lint / check        — ruff + dry-run --strict"
 
 dry-run:
@@ -46,6 +47,9 @@ cpt:
 
 eval:
 	./scripts/eval/benchmarks.sh
+
+retrieval-benchmark:
+	./scripts/eval/beir_retrieval.sh
 
 lint:
 	@command -v ruff >/dev/null 2>&1 && ruff check tools/ || python3 -m ruff check tools/

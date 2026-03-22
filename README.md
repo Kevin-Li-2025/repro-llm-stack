@@ -101,6 +101,8 @@ pip install -U pip
 pip install -e ".[data]"
 pip install -e ".[train]"
 pip install -e ".[eval]"
+# Optional: public retrieval benchmark (BEIR) — dense vs +cross-encoder rerank
+pip install -e ".[retrieval]"
 ```
 
 ### Makefile shortcuts
@@ -111,6 +113,7 @@ make prepare && make quality
 make experiments-render
 make sft && make dpo
 make eval
+make retrieval-benchmark             # optional BEIR table (needs .[retrieval])
 make prepare-cpt-smoke && make cpt   # optional CPT smoke
 make findings                        # MEASURED_FINDINGS.md + SVG (after prepare + quality)
 make check
@@ -122,6 +125,7 @@ make check
 - `repro-dry-run` / `repro-summarize-eval` / `repro-compare-eval`
 - `repro-data-quality` / `repro-experiments-render` / `repro-synth-prefs-demo`
 - `repro-render-findings` / `repro-plot-qa-figure`
+- `repro-beir-retrieval-compare` (after `pip install -e ".[retrieval]"`)
 
 ### 1) Post-training data + manifest
 
@@ -140,6 +144,15 @@ make check
 
 ```bash
 MODEL_PATH=Qwen/Qwen2.5-7B ./scripts/eval/benchmarks.sh
+```
+
+### Optional) Retrieval vs RAG first-stage baseline (BEIR)
+
+Vanilla RAG is often **one bi-encoder + top‑k**. This repo can A/B that against **bi-encoder + cross-encoder rerank** on the public **BEIR** benchmark; see **[docs/RAG_RETRIEVAL_BENCHMARK.md](docs/RAG_RETRIEVAL_BENCHMARK.md)** and the pinned table **[docs/BENCHMARK_RETRIEVAL_BEIR.md](docs/BENCHMARK_RETRIEVAL_BEIR.md)**.
+
+```bash
+pip install -e ".[retrieval]"
+./scripts/eval/beir_retrieval.sh --datasets nfcorpus scifact
 ```
 
 ### 4) Serve (optional)

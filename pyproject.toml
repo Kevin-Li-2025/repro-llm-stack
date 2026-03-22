@@ -25,6 +25,7 @@ repro-experiments-render = "tools.experiments_render:cli"
 repro-synth-prefs-demo = "tools.synth_preference_demo:cli"
 repro-render-findings = "tools.render_measured_findings:cli"
 repro-plot-qa-figure = "tools.plot_qa_figure:cli"
+repro-beir-retrieval-compare = "tools.beir_retrieval_compare:cli"
 
 [project.optional-dependencies]
 dev = [
@@ -47,6 +48,13 @@ eval = [
   "torch>=2.3.0",
   "transformers>=4.44.0",
   "accelerate>=0.33.0",
+]
+retrieval = [
+  "beir>=2.0.0",
+  "sentence-transformers>=3.0.0",
+  "torch>=2.3.0",
+  "transformers>=4.44.0",
+  "datasets>=2.19.0",
 ]
 
 [tool.setuptools.packages.find]
